@@ -1,0 +1,23 @@
+{
+  "name": "amirhossein5/return-error",
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "Amirhossein5\\ReturnError\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\": "tests/"
+    }
+  },
+  "authors": [
+    {
+      "name": "amirHossein5",
+      "email": "amir5665@yahoo.com"
+    }
+  ],
+  "require-dev": {
+    "phpunit/phpunit": "^11.4"
+  }
+}
