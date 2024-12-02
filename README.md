@@ -107,7 +107,7 @@ it will return the callback result, or if the exception occures, it'll return Re
 
 ## Unwrapping ReturnError
 
-In some cases you might want to throw the ReturnError if some function returns it:
+In some cases you might want to throw the ReturnError if a function returns it:
 
 ```php
 $num = unwrapRE(divide(20, 0)); // throws exception
