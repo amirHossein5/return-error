@@ -103,7 +103,7 @@ $result = wrapRE(function() {
 });
 ```
 
-it will return the callback result, or if the exception occures, it'll return ReturnError.
+it will return the callback result, or if the exception occures, it'll return ReturnError that has the exception message.
 
 ## Unwrapping ReturnError
 
