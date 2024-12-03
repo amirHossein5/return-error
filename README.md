@@ -5,7 +5,7 @@ Return error class with utility functions.
 - requires php8.2
 
 ```sh
-composer require amirhossein5/return-erro
+composer require amirhossein5/return-error
 ```
 
 ## Usage
