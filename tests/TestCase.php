@@ -9,7 +9,7 @@ use Throwable;
 
 abstract class TestCase extends FrameworkTestCase
 {
-    protected function assertThrows(Closure $test, string|Closure $expectedClass = Throwable::class, ?string $expectedMessage = null)
+    protected function assertThrows(Closure $test, string $expectedClass = Throwable::class, ?string $expectedMessage = null): self
     {
         try {
             $test();

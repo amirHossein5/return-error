@@ -16,10 +16,6 @@ function isReturnError(mixed $value, string|UnitEnum|BackedEnum $type): bool
         return false;
     }
 
-    if (is_null($type)) {
-        return true;
-    }
-
     return $value->type === $type;
 }
 
@@ -30,7 +26,7 @@ function newReturnError(?string $message = null, null|string|UnitEnum|BackedEnum
 
 function reportRE(ReturnError $re, mixed $additionalLogData = null): void
 {
-    report($re->toString($additionalLogData));
+    report($re->toString($additionalLogData)); /** @phpstan-ignore-line */
 }
 
 /**
@@ -50,7 +46,7 @@ function unwrapRE(mixed $re, mixed $additionalLogData = null): mixed
 /**
  * @template T
  * @param callable(): T $callable
- * @return T|\App\ReturnError\ReturnError
+ * @return T|\Amirhossein5\ReturnError\ReturnError
  */
 function wrapRE(callable $callable): mixed
 {
