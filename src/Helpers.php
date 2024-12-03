@@ -24,9 +24,9 @@ function newReturnError(?string $message = null, null|string|UnitEnum|BackedEnum
     return new ReturnError(message: $message, type: $type);
 }
 
-function reportRE(ReturnError $re, mixed $additionalLogData = null): void
+function reportRE(ReturnError $re, mixed $additional = null): void
 {
-    report($re->toString($additionalLogData)); /** @phpstan-ignore-line */
+    report($re->toString($additional)); /** @phpstan-ignore-line */
 }
 
 /**
@@ -34,10 +34,10 @@ function reportRE(ReturnError $re, mixed $additionalLogData = null): void
  * @param T $re
  * @return T
  */
-function unwrapRE(mixed $re, mixed $additionalLogData = null): mixed
+function unwrapRE(mixed $re, mixed $additional = null): mixed
 {
     if (is_a($re, ReturnError::class)) {
-        throw new Exception($re->toString($additionalLogData));
+        throw new Exception($re->toString($additional));
     }
 
     return $re;
