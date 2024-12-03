@@ -4,7 +4,10 @@
   "autoload": {
     "psr-4": {
       "Amirhossein5\\ReturnError\\": "src/"
-    }
+    },
+    "files": [
+      "src/Helpers.php"
+    ]
   },
   "autoload-dev": {
     "psr-4": {
