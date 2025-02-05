@@ -3,6 +3,8 @@
 namespace Amirhossein5\ReturnError;
 
 use BackedEnum;
+use Exception;
+use Throwable;
 use UnitEnum;
 
 class ReturnError
@@ -37,5 +39,38 @@ class ReturnError
         }
 
         return trim($message, ', ');
+    }
+
+    public function report(mixed $additional = null): void
+    {
+        report($this->toString($additional));
+    }
+
+    /**
+     * @template T
+     * @param callable(): T $callable
+     * @return T|\App\Classes\ReturnError
+     */
+    public static function wrap(callable $callable): mixed
+    {
+        try {
+            return $callable();
+        } catch (Throwable $e) {
+            return new self($e->getMessage());
+        }
+    }
+
+    /**
+     * @template T
+     * @param T $re
+     * @return T
+     */
+    public static function unwrap(mixed $re, mixed $additional = null): mixed
+    {
+        if ($re instanceof ReturnError) {
+            throw new Exception($re->toString($additional));
+        }
+
+        return $re;
     }
 }

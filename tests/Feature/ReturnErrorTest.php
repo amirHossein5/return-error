@@ -6,11 +6,6 @@ use Amirhossein5\ReturnError\ReturnError;
 use Exception;
 use Tests\TestCase;
 
-use function Amirhossein5\ReturnError\isReturnError;
-use function Amirhossein5\ReturnError\newReturnError;
-use function Amirhossein5\ReturnError\unwrapRE;
-use function Amirhossein5\ReturnError\wrapRE;
-
 enum Errors
 {
     case EXAMPLE;
@@ -25,47 +20,45 @@ class ReturnErrorTest extends TestCase
 {
     public function test_new_return_error(): void
     {
-        $returnError = newReturnError();
-        $this->assertTrue($returnError instanceof ReturnError);
-        $this->assertFalse(isReturnError($returnError, Errors::EXAMPLE));
+        $returnError = new ReturnError();
+        $this->assertFalse($returnError->type === Errors::EXAMPLE);
 
-        $returnError = newReturnError(type: 'sometype');
-        $this->assertTrue(isReturnError($returnError, type: 'sometype'));
-        $this->assertFalse(isReturnError($returnError, Errors::EXAMPLE));
+        $returnError = new ReturnError(type: 'sometype');
+        $this->assertTrue($returnError->type === 'sometype');
+        $this->assertFalse($returnError->type === Errors::EXAMPLE);
 
-        $returnError = newReturnError(type: Errors::EXAMPLE);
-        $this->assertTrue($returnError instanceof ReturnError);
-        $this->assertTrue(isReturnError($returnError, type: Errors::EXAMPLE));
+        $returnError = new ReturnError(type: Errors::EXAMPLE);
+        $this->assertTrue($returnError->type === Errors::EXAMPLE);
     }
 
     public function test_error_message(): void
     {
         $this->assertThrows(function () {
-            unwrapRE(newReturnError());
+            ReturnError::unwrap(new ReturnError());
         }, expectedMessage: '');
 
         $this->assertThrows(function () {
-            unwrapRE(newReturnError('some message'));
+            ReturnError::unwrap(new ReturnError('some message'));
         }, expectedMessage: 'message: some message');
 
         $this->assertThrows(function () {
-            unwrapRE(newReturnError(type: 'some type'));
+            ReturnError::unwrap(new ReturnError(type: 'some type'));
         }, expectedMessage: 'type: some type');
         $this->assertThrows(function () {
-            unwrapRE(newReturnError(type: Errors::EXAMPLE));
+            ReturnError::unwrap(new ReturnError(type: Errors::EXAMPLE));
         }, expectedMessage: 'type: EXAMPLE');
         $this->assertThrows(function () {
-            unwrapRE(newReturnError(type: ErrorsB::EXAMPLE));
+            ReturnError::unwrap(new ReturnError(type: ErrorsB::EXAMPLE));
         }, expectedMessage: 'type: example');
 
         $this->assertThrows(function () {
-            unwrapRE(newReturnError(message: 'test message', type: 'some type'));
+            ReturnError::unwrap(new ReturnError(message: 'test message', type: 'some type'));
         }, expectedMessage: 'message: test message, type: some type');
         $this->assertThrows(function () {
-            unwrapRE(newReturnError(message: 'test message', type: Errors::EXAMPLE));
+            ReturnError::unwrap(new ReturnError(message: 'test message', type: Errors::EXAMPLE));
         }, expectedMessage: 'message: test message, type: EXAMPLE');
         $this->assertThrows(function () {
-            unwrapRE(newReturnError(message: 'test message', type: ErrorsB::EXAMPLE));
+            ReturnError::unwrap(new ReturnError(message: 'test message', type: ErrorsB::EXAMPLE));
         }, expectedMessage: 'message: test message, type: example');
     }
 
@@ -84,45 +77,45 @@ class ReturnErrorTest extends TestCase
 
         foreach ($payloads as $payload) {
             $this->assertThrows(function () use ($payload) {
-                unwrapRE(newReturnError(), $payload['arg']);
+                ReturnError::unwrap(new ReturnError(), $payload['arg']);
             }, expectedMessage: "additional: {$payload['exp']}");
 
             $this->assertThrows(function () use ($payload) {
-                unwrapRE(newReturnError('some message'), $payload['arg']);
+                ReturnError::unwrap(new ReturnError('some message'), $payload['arg']);
             }, expectedMessage: "message: some message, additional: {$payload['exp']}");
 
             $this->assertThrows(function () use ($payload) {
-                unwrapRE(newReturnError(type: 'some type'), $payload['arg']);
+                ReturnError::unwrap(new ReturnError(type: 'some type'), $payload['arg']);
             }, expectedMessage: "type: some type, additional: {$payload['exp']}");
             $this->assertThrows(function () use ($payload) {
-                unwrapRE(newReturnError(type: Errors::EXAMPLE), $payload['arg']);
+                ReturnError::unwrap(new ReturnError(type: Errors::EXAMPLE), $payload['arg']);
             }, expectedMessage: "type: EXAMPLE, additional: {$payload['exp']}");
             $this->assertThrows(function () use ($payload) {
-                unwrapRE(newReturnError(type: ErrorsB::EXAMPLE), $payload['arg']);
+                ReturnError::unwrap(new ReturnError(type: ErrorsB::EXAMPLE), $payload['arg']);
             }, expectedMessage: "type: example, additional: {$payload['exp']}");
 
             $this->assertThrows(function () use ($payload) {
-                unwrapRE(newReturnError(message: 'test message', type: 'some type'), $payload['arg']);
+                ReturnError::unwrap(new ReturnError(message: 'test message', type: 'some type'), $payload['arg']);
             }, expectedMessage: "message: test message, type: some type, additional: {$payload['exp']}");
             $this->assertThrows(function () use ($payload) {
-                unwrapRE(newReturnError(message: 'test message', type: Errors::EXAMPLE), $payload['arg']);
+                ReturnError::unwrap(new ReturnError(message: 'test message', type: Errors::EXAMPLE), $payload['arg']);
             }, expectedMessage: "message: test message, type: EXAMPLE, additional: {$payload['exp']}");
             $this->assertThrows(function () use ($payload) {
-                unwrapRE(newReturnError(message: 'test message', type: ErrorsB::EXAMPLE), $payload['arg']);
+                ReturnError::unwrap(new ReturnError(message: 'test message', type: ErrorsB::EXAMPLE), $payload['arg']);
             }, expectedMessage: "message: test message, type: example, additional: {$payload['exp']}");
         }
     }
 
     public function test_wraps_exception(): void
     {
-        $res = wrapRE(function (): int {
+        $res = ReturnError::wrap(function (): int {
             throw new Exception("some error message");
             return 2;
         });
         $this->assertTrue($res instanceof ReturnError);
         $this->assertEquals($res->toString(), 'message: some error message');
 
-        $res = wrapRE(function (): int {
+        $res = ReturnError::wrap(function (): int {
             return 2;
         });
         $this->assertFalse($res instanceof ReturnError);
