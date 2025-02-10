@@ -28,8 +28,8 @@ function divide(int $num, int $divideBy): int|ReturnError
 }
 
 $divisionResult = divide(20, 0);
-if ($divideResult instanceof ReturnError) {
-    if ($divideResult->type === DivisionErrors::DIVISION_BY_ZERO)) {
+if ($divisionResult instanceof ReturnError) {
+    if ($divisionResult->type === DivisionErrors::DIVISION_BY_ZERO) {
         // ...
     }
 
