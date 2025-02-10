@@ -79,12 +79,12 @@ enum DivisionErrors: string { case DIVISION_BY_ZERO = 'division_by_zero'; }
 To wrap an exception into a ReturnError class instance use:
 
 ```php
-$result = wrapRE(function() {
+$result = ReturnError::wrap(function() {
     throw new Exception();
 });
 $result instanceof ReturnError; // true
 
-$result = wrapRE(function(): int {
+$result = ReturnError::wrap(function(): int {
     return 2;
 });
 $result === 2; // true
