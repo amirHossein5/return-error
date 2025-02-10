@@ -43,13 +43,14 @@ class ReturnError
 
     public function report(mixed $additional = null): void
     {
+        /** @phpstan-ignore-next-line */
         report($this->toString($additional));
     }
 
     /**
      * @template T
      * @param callable(): T $callable
-     * @return T|\App\Classes\ReturnError
+     * @return T|\Amirhossein5\ReturnError\ReturnError
      */
     public static function wrap(callable $callable): mixed
     {
