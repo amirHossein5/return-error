@@ -6,7 +6,7 @@ on:
 
 jobs:
   linux-tests:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     
     strategy:
       fail-fast: true
@@ -33,7 +33,7 @@ jobs:
         run: vendor/bin/phpunit
 
   phpstan:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     
     strategy:
       fail-fast: true
