@@ -152,3 +152,7 @@ enum DivisionErrors: string { case DIVISION_BY_ZERO = 'division_by_zero'; }
 (new ReturnError())->report(additional: 'string'); // local.ERROR: additional: "string" {"exception...
 (new ReturnError())->report(additional: ['given' => '...']); // local.ERROR: additional: {"given":"..."} {"exception...
 ```
+
+## License
+
+This project is open-source software licensed under the [MIT License](https://opensource.org/licenses/MIT).
